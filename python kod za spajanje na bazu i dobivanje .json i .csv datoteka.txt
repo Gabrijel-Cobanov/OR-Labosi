@@ -1,0 +1,78 @@
+import sys
+
+import re
+import psycopg2
+import pandas as pd
+
+conn = psycopg2.connect(
+    dbname="__DB_NAME__",
+    user="__USERNAME__",
+    password="__MASTER_PASS__",
+    host="__HOST__"
+)
+
+def export_to_csv(query, file_name="output.csv"):
+    df = pd.read_sql_query(query, conn)
+    df.to_csv(file_name, index=False)
+    conn.close()
+    print(f"comics.csv")
+
+
+def parse_people_field(field, include_role=False):
+    """Parse a field with names (and optional roles) into a list of dictionaries."""
+    people = []
+    entries = field.split(',')
+
+    for entry in entries:
+        parts = entry.strip().split()  # Split by whitespace for names
+        name, lastname = parts[0], " ".join(parts[1:])
+
+        person = {"name": name, "lastname": lastname}
+
+        # Extract and add role if required (for artists)
+        if include_role:
+            role_match = re.search(r"\((.*?)\)", entry)
+            if role_match:
+                person["role"] = role_match.group(1)
+
+        people.append(person)
+
+    return people
+
+
+def export_to_json(query, file_name="output.json"):
+    df = pd.read_sql_query(query, conn)
+
+    # Convert date column to string to maintain 'YYYY-MM-DD' format
+    if 'date_published' in df.columns:
+        df['date_published'] = df['date_published'].astype(str)
+
+    # Parse 'writers' and 'artists' fields
+    if 'writers' in df.columns:
+        df['writers'] = df['writers'].apply(lambda x: parse_people_field(x))
+
+    if 'artists' in df.columns:
+        df['artists'] = df['artists'].apply(lambda x: parse_people_field(x, include_role=True))
+
+    # Export to JSON with formatted data
+    df.to_json(file_name, orient="records", indent=4)
+    conn.close()
+    print(f"comics.json")
+
+
+def main():
+    query = sys.argv[1]
+    file_format = sys.argv[2]
+
+    if file_format == 'json':
+        file_name = "comics.json"
+        export_to_json(query, file_name)
+    elif file_format == 'csv':
+        file_name = "comics.csv"
+        export_to_csv(query, file_name)
+    else:
+        print("Invalid choice. Please choose json or csv.")
+
+
+if __name__ == "__main__":
+    main()
