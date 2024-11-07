@@ -1,0 +1,326 @@
+[
+    {
+        "id":1,
+        "publisher":"Marvel",
+        "publisher_country":"United States",
+        "title":"The Amazing Spider-Man",
+        "writers":[
+            {
+                "name":"Stan",
+                "lastname":"Lee"
+            },
+            {
+                "name":"Steve",
+                "lastname":"Ditko"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Steve",
+                "lastname":"Ditko (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Dave",
+                "lastname":"Hunt (colors)",
+                "role":"colors"
+            },
+            {
+                "name":"John",
+                "lastname":"Romita (inks)",
+                "role":"inks"
+            }
+        ],
+        "main_character":"Spider-Man",
+        "side_characters":"Aunt May, Mary Jane Watson, J. Jonah Jameson",
+        "story_arc":"The Night Gwen Stacy Died",
+        "comic_number":121,
+        "date_published":"1973-06-01",
+        "number_of_pages":22,
+        "genre":"Superhero"
+    },
+    {
+        "id":2,
+        "publisher":"Marvel",
+        "publisher_country":"United States",
+        "title":"Spider-Man: Blue",
+        "writers":[
+            {
+                "name":"Jeph",
+                "lastname":"Loeb"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Tim",
+                "lastname":"Sale (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Matt",
+                "lastname":"Hollingsworth (colors)",
+                "role":"colors"
+            }
+        ],
+        "main_character":"Spider-Man",
+        "side_characters":"Gwen Stacy, Mary Jane Watson",
+        "story_arc":"Spider-Man: Blue",
+        "comic_number":1,
+        "date_published":"2002-07-01",
+        "number_of_pages":44,
+        "genre":"Superhero"
+    },
+    {
+        "id":3,
+        "publisher":"Marvel",
+        "publisher_country":"United States",
+        "title":"Ultimate Spider-Man",
+        "writers":[
+            {
+                "name":"Brian",
+                "lastname":"Michael Bendis"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Mark",
+                "lastname":"Bagley (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Art",
+                "lastname":"Thibert (inks)",
+                "role":"inks"
+            },
+            {
+                "name":"Steve",
+                "lastname":"buccellato (colors)",
+                "role":"colors"
+            }
+        ],
+        "main_character":"Spider-Man",
+        "side_characters":"Aunt May, Green Goblin, Mary Jane Watson, Ben Parker",
+        "story_arc":"Ultimate Power and Responsibility",
+        "comic_number":1,
+        "date_published":"2000-09-06",
+        "number_of_pages":52,
+        "genre":"Superhero"
+    },
+    {
+        "id":4,
+        "publisher":"Marvel",
+        "publisher_country":"United States",
+        "title":"The Amazing Spider-Man",
+        "writers":[
+            {
+                "name":"Dan",
+                "lastname":"Slott"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Humberto",
+                "lastname":"Ramos (pencils)",
+                "role":"pencils"
+            }
+        ],
+        "main_character":"Spider-Man",
+        "side_characters":"Spider Girl, Lady Spider, Morlun",
+        "story_arc":"Spider-Verse",
+        "comic_number":9,
+        "date_published":"2014-12-01",
+        "number_of_pages":40,
+        "genre":"Superhero"
+    },
+    {
+        "id":5,
+        "publisher":"Marvel",
+        "publisher_country":"United States",
+        "title":"Spider-Man: Life Story",
+        "writers":[
+            {
+                "name":"Chip",
+                "lastname":"Zdarsky"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Mark",
+                "lastname":"Bagley (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"John",
+                "lastname":"Dell (inks)",
+                "role":"inks"
+            }
+        ],
+        "main_character":"Spider-Man",
+        "side_characters":"Captain America, Iron Man",
+        "story_arc":"Spider-Man: Life Story",
+        "comic_number":1,
+        "date_published":"2019-03-01",
+        "number_of_pages":212,
+        "genre":"Superhero"
+    },
+    {
+        "id":6,
+        "publisher":"DC Comics",
+        "publisher_country":"United States",
+        "title":"Batman: Year One",
+        "writers":[
+            {
+                "name":"Frank",
+                "lastname":"Miller"
+            }
+        ],
+        "artists":[
+            {
+                "name":"David",
+                "lastname":"Mazzucchelli (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Richmond",
+                "lastname":"Lewis (colors)",
+                "role":"colors"
+            }
+        ],
+        "main_character":"Batman",
+        "side_characters":"James Gordon, Catwoman",
+        "story_arc":"Year One",
+        "comic_number":404,
+        "date_published":"1988-06-16",
+        "number_of_pages":108,
+        "genre":"Superhero"
+    },
+    {
+        "id":7,
+        "publisher":"DC Comics",
+        "publisher_country":"United States",
+        "title":"Batman: The Long Halloween",
+        "writers":[
+            {
+                "name":"Jeph",
+                "lastname":"Loeb"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Tim",
+                "lastname":"Sale (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Tim",
+                "lastname":"Sale (inks)",
+                "role":"inks"
+            }
+        ],
+        "main_character":"Batman",
+        "side_characters":"Harvey Dent, The Joker",
+        "story_arc":"The Long Halloween",
+        "comic_number":1,
+        "date_published":"1996-12-01",
+        "number_of_pages":52,
+        "genre":"Superhero"
+    },
+    {
+        "id":8,
+        "publisher":"DC Comics",
+        "publisher_country":"United States",
+        "title":"Batman: Hush",
+        "writers":[
+            {
+                "name":"Jeph",
+                "lastname":"Loeb"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Jim",
+                "lastname":"Lee (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Scott",
+                "lastname":"Williams (inks)",
+                "role":"inks"
+            }
+        ],
+        "main_character":"Batman",
+        "side_characters":"Catwoman, Hush",
+        "story_arc":"Hush",
+        "comic_number":1,
+        "date_published":"2003-04-30",
+        "number_of_pages":136,
+        "genre":"Superhero"
+    },
+    {
+        "id":9,
+        "publisher":"DC Comics",
+        "publisher_country":"United States",
+        "title":"The Dark Knight Returns",
+        "writers":[
+            {
+                "name":"Frank",
+                "lastname":"Miller"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Frank",
+                "lastname":"Miller (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"Klaus",
+                "lastname":"Janson (inks)",
+                "role":"inks"
+            },
+            {
+                "name":"Lynn",
+                "lastname":"Varley (colors)",
+                "role":"colors"
+            }
+        ],
+        "main_character":"Batman",
+        "side_characters":"Robin, Joker, Superman",
+        "story_arc":"The Dark Knight Returns",
+        "comic_number":1,
+        "date_published":"1986-02-01",
+        "number_of_pages":204,
+        "genre":"Superhero"
+    },
+    {
+        "id":10,
+        "publisher":"DC Comics",
+        "publisher_country":"United States",
+        "title":"Batman: The Killing Joke",
+        "writers":[
+            {
+                "name":"Alan",
+                "lastname":"Moore"
+            }
+        ],
+        "artists":[
+            {
+                "name":"Brian",
+                "lastname":"Bolland (pencils)",
+                "role":"pencils"
+            },
+            {
+                "name":"John",
+                "lastname":"Higgins (colors)",
+                "role":"colors"
+            }
+        ],
+        "main_character":"Batman",
+        "side_characters":"The Joker, Barbara Gordon",
+        "story_arc":"The Killing Joke",
+        "comic_number":1,
+        "date_published":"1988-03-29",
+        "number_of_pages":52,
+        "genre":"Superhero"
+    }
+]

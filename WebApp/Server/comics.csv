@@ -1,0 +1,11 @@
+id,publisher,publisher_country,title,writers,artists,main_character,side_characters,story_arc,comic_number,date_published,number_of_pages,genre
+1,Marvel,United States,The Amazing Spider-Man,"Stan Lee, Steve Ditko","Steve Ditko (pencils), Dave Hunt (colors), John Romita (inks)",Spider-Man,"Aunt May, Mary Jane Watson, J. Jonah Jameson",The Night Gwen Stacy Died,121,1973-06-01,22,Superhero
+2,Marvel,United States,Spider-Man: Blue,Jeph Loeb,"Tim Sale (pencils), Matt Hollingsworth (colors)",Spider-Man,"Gwen Stacy, Mary Jane Watson",Spider-Man: Blue,1,2002-07-01,44,Superhero
+3,Marvel,United States,Ultimate Spider-Man,Brian Michael Bendis,"Mark Bagley (pencils), Art Thibert (inks), Steve buccellato (colors)",Spider-Man,"Aunt May, Green Goblin, Mary Jane Watson, Ben Parker",Ultimate Power and Responsibility,1,2000-09-06,52,Superhero
+4,Marvel,United States,The Amazing Spider-Man,Dan Slott,Humberto Ramos (pencils),Spider-Man,"Spider Girl, Lady Spider, Morlun",Spider-Verse,9,2014-12-01,40,Superhero
+5,Marvel,United States,Spider-Man: Life Story,Chip Zdarsky,"Mark Bagley (pencils), John Dell (inks)",Spider-Man,"Captain America, Iron Man",Spider-Man: Life Story,1,2019-03-01,212,Superhero
+6,DC Comics,United States,Batman: Year One,Frank Miller,"David Mazzucchelli (pencils), Richmond Lewis (colors)",Batman,"James Gordon, Catwoman",Year One,404,1988-06-16,108,Superhero
+7,DC Comics,United States,Batman: The Long Halloween,Jeph Loeb,"Tim Sale (pencils), Tim Sale (inks)",Batman,"Harvey Dent, The Joker",The Long Halloween,1,1996-12-01,52,Superhero
+8,DC Comics,United States,Batman: Hush,Jeph Loeb,"Jim Lee (pencils), Scott Williams (inks)",Batman,"Catwoman, Hush",Hush,1,2003-04-30,136,Superhero
+9,DC Comics,United States,The Dark Knight Returns,Frank Miller,"Frank Miller (pencils), Klaus Janson (inks), Lynn Varley (colors)",Batman,"Robin, Joker, Superman",The Dark Knight Returns,1,1986-02-01,204,Superhero
+10,DC Comics,United States,Batman: The Killing Joke,Alan Moore,"Brian Bolland (pencils), John Higgins (colors)",Batman,"The Joker, Barbara Gordon",The Killing Joke,1,1988-03-29,52,Superhero
