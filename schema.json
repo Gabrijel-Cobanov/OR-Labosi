@@ -1,0 +1,138 @@
+{
+    "$schema": "schema-for-comic-data",
+    "$id": "comic-schema-id-1984",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "id",
+        "publisher",
+        "publisher_country",
+        "title",
+        "writers",
+        "artists",
+        "main_character",
+        "side_characters",
+        "story_arc",
+        "comic_number",
+        "date_published",
+        "number_of_pages",
+        "genre"
+    ],
+    "properties": {
+        "id": {
+            "type": "integer",
+            "default": 0,
+            "title": "The id Schema"
+        },
+        "publisher": {
+            "type": "string",
+            "default": "",
+            "title": "The publisher Schema"
+        },
+        "publisher_country": {
+            "type": "string",
+            "default": "",
+            "title": "The publisher_country Schema"
+        },
+        "title": {
+            "type": "string",
+            "default": "",
+            "title": "The title Schema"
+        },
+        "writers": {
+            "type": "array",
+            "default": [],
+            "title": "The writers Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name",
+                    "lastname"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema",
+                        "examples": [
+                            "Stan",
+                            "Steve"
+                        ]
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "The lastname Schema",
+                        "examples": [
+                            "Lee",
+                            "Ditko"
+                        ]
+                    }
+                }
+            }
+        },
+        "artists": {
+            "type": "array",
+            "default": [],
+            "title": "The artists Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name",
+                    "lastname",
+                    "role"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "The lastname Schema"
+                    },
+                    "role": {
+                        "type": "string",
+                        "title": "The role Schema"
+                    }
+                }
+            }
+        },
+        "main_character": {
+            "type": "string",
+            "default": "",
+            "title": "The main_character Schema"
+        },
+        "side_characters": {
+            "type": "string",
+            "default": "",
+            "title": "The side_characters Schema"
+        },
+        "story_arc": {
+            "type": "string",
+            "default": "",
+            "title": "The story_arc Schema"
+        },
+        "comic_number": {
+            "type": "integer",
+            "default": 0,
+            "title": "The comic_number Schema"
+        },
+        "date_published": {
+            "type": "string",
+            "default": "",
+            "title": "The date_published Schema"
+        },
+        "number_of_pages": {
+            "type": "integer",
+            "default": 0,
+            "title": "The number_of_pages Schema"
+        },
+        "genre": {
+            "type": "string",
+            "default": "",
+            "title": "The genre Schema"
+        }
+    }
+}
