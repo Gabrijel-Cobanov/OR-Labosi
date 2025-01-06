@@ -1,0 +1,294 @@
+openapi: 3.0.0
+info:
+  title: Comics API
+  version: 1.0.0
+  description: API for managing comics data, including fetching and updating comic details.
+
+paths:
+  /comics:
+    get:
+      summary: Get all comics
+      operationId: getAllComics
+      responses:
+        '200':
+          description: Successfully fetched all comics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Fetched all comics.
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comic'
+        '500':
+          description: Internal server error
+    post:
+      summary: Add a new comic
+      operationId: addComic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comic'
+      responses:
+        '201':
+          description: Comic successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Comic added.
+                  data:
+                    $ref: '#/components/schemas/Comic'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /comics/{id}:
+    get:
+      summary: Get comic by ID
+      operationId: getComicById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The comic ID to fetch
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully fetched the comic by ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Fetched comic by ID.
+                  data:
+                    $ref: '#/components/schemas/Comic'
+        '404':
+          description: Comic not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Update comic by ID
+      operationId: updateComic
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The comic ID to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comic'
+      responses:
+        '200':
+          description: Successfully updated comic
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Comic updated.
+                  data:
+                    $ref: '#/components/schemas/Comic'
+        '404':
+          description: Comic not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete comic by ID
+      operationId: deleteComic
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The comic ID to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted the comic
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Comic deleted.
+                  data:
+                    $ref: '#/components/schemas/Comic'
+        '404':
+          description: Comic not found
+        '500':
+          description: Internal server error
+
+  /comics/publisher/{publisher}:
+    get:
+      summary: Get comics by publisher
+      operationId: getComicsByPublisher
+      parameters:
+        - name: publisher
+          in: path
+          required: true
+          description: The publisher name to search for
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully fetched comics by publisher
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Fetched comics from publishers matching: Marvel'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comic'
+        '404':
+          description: No comics found for the publisher
+        '500':
+          description: Internal server error
+
+  /comics/title/{title}:
+    get:
+      summary: Get comics by title
+      operationId: getComicsByTitle
+      parameters:
+        - name: title
+          in: path
+          required: true
+          description: The title to search for in comics
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully fetched comics by title
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Fetched all comics with title containing: Batman'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comic'
+        '404':
+          description: No comics found with the title
+        '500':
+          description: Internal server error
+
+  /comics/writers/{writer}:
+    get:
+      summary: Get comics by writer
+      operationId: getComicsByWriter
+      parameters:
+        - name: writer
+          in: path
+          required: true
+          description: The writer to search for in comics
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully fetched comics by writer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Fetched all comics with writers containing: Stan Lee'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comic'
+        '404':
+          description: No comics found with the writer
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Comic:
+      type: object
+      properties:
+        publisher:
+          type: string
+        publisher_country:
+          type: string
+        title:
+          type: string
+        writers:
+          type: string
+          description: Comma-separated list of writer names (e.g., "Stan Lee, Steve Ditko")
+        artists:
+          type: string
+          description: Comma-separated list of artist names with roles (e.g., "Jack Kirby (penciller), Steve Ditko (inker)")
+        main_character:
+          type: string
+        side_characters:
+          type: string
+          description: Comma-separated list of side characters (e.g., "Robin, Batgirl")
+        story_arc:
+          type: string
+        comic_number:
+          type: integer
+        date_published:
+          type: string
+          format: date
+        number_of_pages:
+          type: integer
+        genre:
+          type: string

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { Pool } = require('pg');
 const { exec } = require('child_process');
 const path = require('path');
 
@@ -7,6 +8,18 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors());
+
+app.use(express.json());
+
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'comicsDB',
+    password: '2099superB',
+    port: 5432,
+});
+
+const responseWrapper = (status, message, data) => ({ status, message, data });
 
 app.get('/data', async (req, res) => {
     console.log('Received request for /data')
@@ -70,6 +83,138 @@ app.get('/download', async (req, res) => {
       console.error('Error:', err);
       res.status(500).send("Server error");
     }
+});
+
+// TRECI LABOS --------------------------------------------------------------------------------------------
+
+// GET all data
+app.get('/comics', async (req, res) => {
+  try {
+      const result = await pool.query('SELECT * FROM comics');
+      res.json(responseWrapper('success', 'Fetched all comics.', result.rows));
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+
+// GET single resource by ID
+app.get('/comics/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await pool.query('SELECT * FROM comics WHERE id = $1', [id]);
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', 'Fetched comic by ID.', result.rows[0]));
+      } else {
+          res.status(404).json(responseWrapper('error', 'Comic not found.'));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+app.get('/comics/publisher/:publisher', async (req, res) => {
+  try {
+      const { publisher } = req.params;
+      const result = await pool.query('SELECT * FROM comics WHERE LOWER(publisher) LIKE $1', [`%${publisher.toLowerCase()}%`]);
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', `Fetched comics from publishers matching: ${publisher}`, result.rows));
+      } else {
+          res.status(404).json(responseWrapper('error', `No comics found for publisher matching: ${publisher}`));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+
+// GET comics by title search (e.g., Batman)
+app.get('/comics/title/:title', async (req, res) => {
+  try {
+      const { title } = req.params;
+      const result = await pool.query('SELECT * FROM comics WHERE LOWER(title) LIKE $1', [`%${title.toLowerCase()}%`]);
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', `Fetched all comics with title containing: ${title}`, result.rows));
+      } else {
+          res.status(404).json(responseWrapper('error', `No comics found with title containing: ${title}`));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+// GET comics by writer search (e.g., Stan Lee)
+app.get('/comics/writers/:writer', async (req, res) => {
+  try {
+      const { writer } = req.params;
+      const result = await pool.query('SELECT * FROM comics WHERE LOWER(writers) LIKE $1', [`%${writer.toLowerCase()}%`]);
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', `Fetched all comics with writers containing: ${writer}`, result.rows));
+      } else {
+          res.status(404).json(responseWrapper('error', `No comics found with writers containing: ${writer}`));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+// POST to add acomic
+app.post('/comics', async (req, res) => {
+  try {
+      const { publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+      const result = await pool.query(
+          'UPDATE comics SET publisher =$1, publisher_counttry =$2, title, writers =$3, artists =$4, main_character =$5, side_characters =$6, story_arc =$7, comic_number =$8, date_published=$9, number_of_pages=$10, genre RETURNING *',
+          [publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre]
+      );
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', 'Comic updated.', result.rows[0]));
+      } else {
+          res.status(404).json(responseWrapper('error', 'Comic not found.'));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+// PUT update resource names have to be comma separated values
+app.put('/comics/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+      const result = await pool.query(
+          'UPDATE comics SET publisher =$1, publisher_counttry =$2, title, writers =$3, artists =$4, main_character =$5, side_characters =$6, story_arc =$7, comic_number =$8, date_published=$9, number_of_pages=$10, genre WHERE id = $11 RETURNING *',
+          [publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre, id]
+      );
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', 'Comic updated.', result.rows[0]));
+      } else {
+          res.status(404).json(responseWrapper('error', 'Comic not found.'));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+// DELETE resource by ID
+app.delete('/comics/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await pool.query('DELETE FROM comics WHERE id = $1 RETURNING *', [id]);
+      if (result.rows.length > 0) {
+          res.json(responseWrapper('success', 'Comic deleted.', result.rows[0]));
+      } else {
+          res.status(404).json(responseWrapper('error', 'Comic not found.'));
+      }
+  } catch (err) {
+      res.status(500).json(responseWrapper('error', err.message));
+  }
+});
+
+app.get('/comics/specification/openapi', (req, res) => {
+  const jsonFilePath = path.join(__dirname, 'openapi.json'); // Replace 'data.json' with your file's name and path
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Disposition', 'attachment; filename="openapi.json"');
+  res.sendFile(jsonFilePath);
 });
 
 
