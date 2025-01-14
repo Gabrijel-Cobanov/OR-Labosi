@@ -7,6 +7,12 @@ const path = require('path');
 const app = express();
 const PORT = 5000;
 
+
+const { auth } = require('express-oauth2-jwt-bearer');
+const dotenv = require('dotenv');
+dotenv.config();
+
+
 app.use(cors());
 
 app.use(express.json());
@@ -18,6 +24,13 @@ const pool = new Pool({
     password: '2099superB',
     port: 5432,
 });
+
+const jwtCheck = auth({
+    audience: process.env.AUTH0_AUDIENCE,
+    issuerBaseURL: process.env.AUTH0_ISSUER_URL,
+    tokenSigningAlg: 'RS256'
+});
+
 
 const responseWrapper = (status, message, data) => ({ status, message, data });
 
@@ -88,7 +101,7 @@ app.get('/download', async (req, res) => {
 // TRECI LABOS --------------------------------------------------------------------------------------------
 
 // GET all data
-app.get('/comics', async (req, res) => {
+app.get('/comics', jwtCheck, async (req, res) => {
   try {
       const result = await pool.query('SELECT * FROM comics');
       res.json(responseWrapper('success', 'Fetched all comics.', result.rows));
@@ -99,7 +112,7 @@ app.get('/comics', async (req, res) => {
 
 
 // GET single resource by ID
-app.get('/comics/:id', async (req, res) => {
+app.get('/comics/:id', jwtCheck, async (req, res) => {
   try {
       const { id } = req.params;
       const result = await pool.query('SELECT * FROM comics WHERE id = $1', [id]);
@@ -113,7 +126,7 @@ app.get('/comics/:id', async (req, res) => {
   }
 });
 
-app.get('/comics/publisher/:publisher', async (req, res) => {
+app.get('/comics/publisher/:publisher', jwtCheck, async (req, res) => {
   try {
       const { publisher } = req.params;
       const result = await pool.query('SELECT * FROM comics WHERE LOWER(publisher) LIKE $1', [`%${publisher.toLowerCase()}%`]);
@@ -129,7 +142,7 @@ app.get('/comics/publisher/:publisher', async (req, res) => {
 
 
 // GET comics by title search (e.g., Batman)
-app.get('/comics/title/:title', async (req, res) => {
+app.get('/comics/title/:title', jwtCheck, async (req, res) => {
   try {
       const { title } = req.params;
       const result = await pool.query('SELECT * FROM comics WHERE LOWER(title) LIKE $1', [`%${title.toLowerCase()}%`]);
@@ -144,7 +157,7 @@ app.get('/comics/title/:title', async (req, res) => {
 });
 
 // GET comics by writer search (e.g., Stan Lee)
-app.get('/comics/writers/:writer', async (req, res) => {
+app.get('/comics/writers/:writer', jwtCheck, async (req, res) => {
   try {
       const { writer } = req.params;
       const result = await pool.query('SELECT * FROM comics WHERE LOWER(writers) LIKE $1', [`%${writer.toLowerCase()}%`]);
@@ -159,12 +172,37 @@ app.get('/comics/writers/:writer', async (req, res) => {
 });
 
 // POST to add acomic
-app.post('/comics', async (req, res) => {
+app.post('/comics', jwtCheck, async (req, res) => {
   try {
-      const { publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+      const { publisher, publisher_country, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+
+      // Check if any required field is missing
+      const missingFields = [];
+      if (!publisher) missingFields.push('publisher');
+      if (!publisher_country) missingFields.push('publisher_country');
+      if (!title) missingFields.push('title');
+      if (!writers) missingFields.push('writers');
+      if (!artists) missingFields.push('artists');
+      if (!main_character) missingFields.push('main_character');
+      if (!side_characters) missingFields.push('side_characters');
+      if (!story_arc) missingFields.push('story_arc');
+      if (comic_number === undefined || comic_number === null) missingFields.push('comic_number');
+      if (!date_published) missingFields.push('date_published');
+      if (number_of_pages === undefined || number_of_pages === null) missingFields.push('number_of_pages');
+      if (!genre) missingFields.push('genre');
+
+      // If there are any missing fields, return a 400 Bad Request
+      if (missingFields.length > 0) {
+          return res.status(400).json({
+              status: 'error',
+              message: `Missing required fields: ${missingFields.join(', ')}`
+          });
+      }
+
       const result = await pool.query(
-          'UPDATE comics SET publisher =$1, publisher_counttry =$2, title, writers =$3, artists =$4, main_character =$5, side_characters =$6, story_arc =$7, comic_number =$8, date_published=$9, number_of_pages=$10, genre RETURNING *',
-          [publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre]
+        `INSERT INTO comics (publisher, publisher_country, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;`,
+        [publisher, publisher_country, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre]
       );
       if (result.rows.length > 0) {
           res.json(responseWrapper('success', 'Comic updated.', result.rows[0]));
@@ -177,14 +215,42 @@ app.post('/comics', async (req, res) => {
 });
 
 // PUT update resource names have to be comma separated values
-app.put('/comics/:id', async (req, res) => {
+app.put('/comics/:id', jwtCheck, async (req, res) => {
   try {
       const { id } = req.params;
-      const { publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+      const { publisher, publisher_country, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre } = req.body;
+
+      // Check if any required field is missing
+      const missingFields = [];
+      if (!publisher) missingFields.push('publisher');
+      if (!publisher_country) missingFields.push('publisher_country');
+      if (!title) missingFields.push('title');
+      if (!writers) missingFields.push('writers');
+      if (!artists) missingFields.push('artists');
+      if (!main_character) missingFields.push('main_character');
+      if (!side_characters) missingFields.push('side_characters');
+      if (!story_arc) missingFields.push('story_arc');
+      if (comic_number === undefined || comic_number === null) missingFields.push('comic_number');
+      if (!date_published) missingFields.push('date_published');
+      if (number_of_pages === undefined || number_of_pages === null) missingFields.push('number_of_pages');
+      if (!genre) missingFields.push('genre');
+
+      // If there are any missing fields, return a 400 Bad Request
+      if (missingFields.length > 0) {
+          return res.status(400).json({
+              status: 'error',
+              message: `Missing required fields: ${missingFields.join(', ')}`
+          });
+      }
+
       const result = await pool.query(
-          'UPDATE comics SET publisher =$1, publisher_counttry =$2, title, writers =$3, artists =$4, main_character =$5, side_characters =$6, story_arc =$7, comic_number =$8, date_published=$9, number_of_pages=$10, genre WHERE id = $11 RETURNING *',
-          [publisher, publisher_counttry, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre, id]
-      );
+        `UPDATE comics
+         SET publisher = $1, publisher_country = $2, title = $3, writers = $4, artists = $5, main_character = $6, side_characters = $7, story_arc = $8, comic_number = $9, date_published = $10, number_of_pages = $11, genre = $12
+         WHERE id = $13 RETURNING *;`,
+        [publisher, publisher_country, title, writers, artists, main_character, side_characters, story_arc, comic_number, date_published, number_of_pages, genre, id]
+    );
+
+    
       if (result.rows.length > 0) {
           res.json(responseWrapper('success', 'Comic updated.', result.rows[0]));
       } else {
@@ -196,7 +262,7 @@ app.put('/comics/:id', async (req, res) => {
 });
 
 // DELETE resource by ID
-app.delete('/comics/:id', async (req, res) => {
+app.delete('/comics/:id', jwtCheck, async (req, res) => {
   try {
       const { id } = req.params;
       const result = await pool.query('DELETE FROM comics WHERE id = $1 RETURNING *', [id]);
